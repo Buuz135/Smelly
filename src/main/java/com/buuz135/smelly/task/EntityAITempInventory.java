@@ -1,46 +1,52 @@
 package com.buuz135.smelly.task;
 
-import com.google.common.collect.Sets;
-import net.minecraft.entity.ai.EntityAITempt;
-import net.minecraft.entity.passive.EntityAnimal;
+import com.buuz135.smelly.storage.EntityData;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
-import java.util.Set;
+public class EntityAITempInventory extends EntityAIBase {
 
-public class EntityAITempInventory extends EntityAITempt {
-
-    private final Set<Item> temptingItems;
     private EntityPlayer temptingPlayer;
-    private EntityAnimal temptedEntity;
+    private EntityCreature temptedEntity;
+    private EntityData data;
+    private int delayTemptCounter;
 
-    public EntityAITempInventory(EntityAnimal temptedEntityIn, double speedIn, Item temptItemIn, boolean scaredByPlayerMovementIn) {
-        this(temptedEntityIn, speedIn, scaredByPlayerMovementIn,  Sets.newHashSet(temptItemIn));
-    }
-
-    public EntityAITempInventory(EntityAnimal temptedEntityIn, double speedIn, boolean scaredByPlayerMovementIn, Set<Item> temptItemIn) {
-        super(temptedEntityIn, speedIn, scaredByPlayerMovementIn, temptItemIn);
-        this.temptingItems = temptItemIn;
+    public EntityAITempInventory(EntityCreature temptedEntityIn, EntityData data) {
         this.temptedEntity = temptedEntityIn;
+        this.data = data;
     }
 
     @Override
     public boolean shouldExecute() {
-        this.temptingPlayer = this.temptedEntity.world.getClosestPlayerToEntity(this.temptedEntity, 10.0D);
-        return super.shouldExecute();
+        if (this.delayTemptCounter > 0) {
+            --this.delayTemptCounter;
+            return false;
+        } else {
+            this.temptingPlayer = this.temptedEntity.world.getClosestPlayerToEntity(this.temptedEntity, 10.0D);
+            if (this.temptingPlayer == null) {
+                return false;
+            } else {
+                return this.isTempting();
+            }
+        }
     }
 
     @Override
     public boolean shouldContinueExecuting() {
-        return super.shouldContinueExecuting();
+        return shouldExecute();
     }
 
-    @Override
-    protected boolean isTempting(ItemStack stack) {
-        for (Item item : temptingItems){
-            if (temptingPlayer.inventory.hasItemStack(new ItemStack(item))) return true;
+    public void updateTask() {
+        this.temptedEntity.getLookHelper().setLookPositionWithEntity(this.temptingPlayer, (float) (this.temptedEntity.getHorizontalFaceSpeed() + 20), (float) this.temptedEntity.getVerticalFaceSpeed());
+        if (this.temptedEntity.getDistanceSq(this.temptingPlayer) < 6.25D) {
+            this.temptedEntity.getNavigator().clearPath();
+        } else {
+            this.temptedEntity.getNavigator().tryMoveToEntityLiving(this.temptingPlayer, this.data.getSpeed());
         }
-        return false;
+    }
+
+    private boolean isTempting() {
+        return data.doesPlayerHaveItem(temptedEntity, temptingPlayer);
     }
 }
