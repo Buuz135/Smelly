@@ -1,0 +1,20 @@
+[
+  {
+    "modid": "smelly",
+    "name": "Smelly",
+    "description": "Makes mobs follow depending the items in your inventory",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "Buuz135"
+    ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": [
+      ""
+    ]
+  }
+]
