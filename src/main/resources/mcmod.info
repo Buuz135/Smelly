@@ -2,7 +2,7 @@
   {
     "modid": "smelly",
     "name": "Smelly",
-    "description": "Makes mobs follow depending the items in your inventory",
+    "description": "Makes mobs follow you depending the items in your inventory",
     "version": "${version}",
     "mcversion": "${mcversion}",
     "url": "",
@@ -14,7 +14,6 @@
     "logoFile": "",
     "screenshots": [],
     "dependencies": [
-      ""
     ]
   }
 ]
