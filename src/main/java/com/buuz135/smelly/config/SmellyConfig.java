@@ -45,6 +45,9 @@ public class SmellyConfig {
     @Config.Comment("Allow mobs to enter 'Breeding mode' if possible")
     public static boolean sexyMode = false;
 
+    @Config.Comment("Allow players from mobs stealing stuff by wearing pants")
+    public static boolean protectionPants = false;
+
     public static void loadEntityInfo() {
         EntityData.entityDataList.clear();
         for (String information : mobInformation) {

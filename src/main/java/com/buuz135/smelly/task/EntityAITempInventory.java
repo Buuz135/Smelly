@@ -66,6 +66,7 @@ public class EntityAITempInventory extends EntityAIBase {
         this.temptedEntity.getLookHelper().setLookPositionWithEntity(this.temptingPlayer, (float) (this.temptedEntity.getHorizontalFaceSpeed() + 20), (float) this.temptedEntity.getVerticalFaceSpeed());
         if (this.temptedEntity.getDistanceSq(this.temptingPlayer) < 6.25D) {
             this.temptedEntity.getNavigator().clearPath();
+            if (SmellyConfig.protectionPants && isPlayerWearingPants()) return;
             if (SmellyConfig.allowMobsToStealFromPlayers) ++this.veryCloseTime;
             if (this.veryCloseTime > SmellyConfig.stealingTime) {
                 List<ItemStack> shuffled = new ArrayList<>(this.data.getPossibleItems());
@@ -95,6 +96,10 @@ public class EntityAITempInventory extends EntityAIBase {
 
     private boolean isTempting() {
         return data.doesPlayerHaveItem(temptedEntity, temptingPlayer);
+    }
+
+    private boolean isPlayerWearingPants() {
+        return !this.temptingPlayer.inventory.armorItemInSlot(1).isEmpty();
     }
 
 }
