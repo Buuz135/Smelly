@@ -32,11 +32,10 @@ public class Smelly {
     @Mod.Instance(MOD_ID)
     public static Smelly INSTANCE;
 
-    //Allow mobs to enter breeding mood if they steal those items
     //Allow player to stop mobs from stealing food by wearing pants
     //Allow mobs to run away if they started getting close when the player starts moving
     //Allow to scare mobs depending of an item/collection/oreDict
-    //Optimize OREDICT checking
+
     private static List<EntityCreature> created = new ArrayList<>();
 
     @Mod.EventHandler

@@ -42,6 +42,9 @@ public class SmellyConfig {
     @Config.Comment("Amount of ticks a mob needs to wait so it can steal stuff from you")
     public static int stealingTime = 20 * 2;
 
+    @Config.Comment("Allow mobs to enter 'Breeding mode' if possible")
+    public static boolean sexyMode = false;
+
     public static void loadEntityInfo() {
         EntityData.entityDataList.clear();
         for (String information : mobInformation) {
