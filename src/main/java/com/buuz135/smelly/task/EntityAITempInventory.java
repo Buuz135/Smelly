@@ -19,7 +19,6 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class EntityAITempInventory extends EntityAIBase {
 
@@ -28,23 +27,33 @@ public class EntityAITempInventory extends EntityAIBase {
     private EntityData data;
     private int delayTemptCounter;
     private int veryCloseTime;
+    private int runAwayTime;
 
     public EntityAITempInventory(EntityCreature temptedEntityIn, EntityData data) {
         this.temptedEntity = temptedEntityIn;
         this.data = data;
         this.delayTemptCounter = 0;
         this.veryCloseTime = 0;
+        this.runAwayTime = 0;
     }
 
     @Override
     public boolean shouldExecute() {
+        --this.runAwayTime;
+        if (this.runAwayTime > 0 && this.temptedEntity.getNavigator().noPath()) {
+            this.temptedEntity.getNavigator().clearPath();
+            Vec3d randomPos = RandomPositionGenerator.getLandPos(this.temptedEntity, 5, 4);
+            if (randomPos != null)
+                this.temptedEntity.getNavigator().tryMoveToXYZ(randomPos.x, randomPos.y, randomPos.z, this.data.getSpeed() * 2); //Make this more random
+            return true;
+        }
         if (this.delayTemptCounter > 0) {
             --this.delayTemptCounter;
             return false;
         } else {
             this.temptingPlayer = this.temptedEntity.world.getClosestPlayerToEntity(this.temptedEntity, 10.0D);
             if (this.temptingPlayer == null) {
-                this.delayTemptCounter = 5 * 20; //Stopping the AI for a while from working
+                this.delayTemptCounter = 3 * 20; //Stopping the AI for a while from working
                 return false;
             } else {
                 return this.isTempting();
@@ -58,6 +67,7 @@ public class EntityAITempInventory extends EntityAIBase {
     }
 
     public void updateTask() {
+        if (this.runAwayTime > 0) return;
         this.temptedEntity.getLookHelper().setLookPositionWithEntity(this.temptingPlayer, (float) (this.temptedEntity.getHorizontalFaceSpeed() + 20), (float) this.temptedEntity.getVerticalFaceSpeed());
         if (this.temptedEntity.getDistanceSq(this.temptingPlayer) < 6.25D) {
             this.temptedEntity.getNavigator().clearPath();
@@ -72,9 +82,8 @@ public class EntityAITempInventory extends EntityAIBase {
                         this.temptingPlayer.inventory.getStackInSlot(slot).shrink(1);
                         this.temptingPlayer.attackEntityFrom(DamageSource.GENERIC, 0.1f);
                         this.veryCloseTime = 0;
-                        this.delayTemptCounter = 5 * 20;
-                        Vec3d randomPos = RandomPositionGenerator.getLandPos(this.temptedEntity, 10, 4);/*getRandPos(this.temptedEntity.world, this.temptedEntity, 10, 4)*/;
-                        if (randomPos != null) this.temptedEntity.getNavigator().tryMoveToXYZ(randomPos.x, randomPos.y, randomPos.z, this.data.getSpeed()*2);
+                        this.delayTemptCounter = 3 * 20;
+                        this.runAwayTime = 2 * 20;
                         break;
                     }
                 }

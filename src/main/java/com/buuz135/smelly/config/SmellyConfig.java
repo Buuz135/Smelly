@@ -33,14 +33,14 @@ public class SmellyConfig {
             "minecraft:rabbit|breeding|1.0",
             "minecraft:sheep|breeding|1.0",
             "minecraft:wolf|breeding|1.0",
-            "minecraft:villager|minecraft:emerald|1.0"
+            "minecraft:villager|minecraft:emerald|0.75"
     };
 
     @Config.Comment("Allow mobs to steal desired items from players if they are very close to the player for a while")
     public static boolean allowMobsToStealFromPlayers = true;
 
     @Config.Comment("Amount of ticks a mob needs to wait so it can steal stuff from you")
-    public static int stealingTime = 20 * 5;
+    public static int stealingTime = 20 * 2;
 
     public static void loadEntityInfo() {
         EntityData.entityDataList.clear();
