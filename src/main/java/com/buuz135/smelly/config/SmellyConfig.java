@@ -22,7 +22,7 @@ public class SmellyConfig {
             " * A list of item ids separated by coma: modid:itemid:meta. Meta can be missing, then it will ignore the metadata of the item (Example: minecraft:wool:7 or minecraft:stone)\n" +
             "Examples: \n" +
             " minecraft:cow|breeding|1.0\n" +
-            " minecraft:pig|minecraft:carrot|1.0")
+            " minecraft:pig|minecraft:carrot|1.0\n")
     public static String[] mobInformation = new String[]{
             "minecraft:chicken|breeding|1.0",
             "minecraft:mooshroom|breeding|1.0",
@@ -40,6 +40,7 @@ public class SmellyConfig {
     public static boolean allowMobsToStealFromPlayers = true;
 
     @Config.Comment("Amount of ticks a mob needs to wait so it can steal stuff from you")
+    @Config.RangeInt(min = 0)
     public static int stealingTime = 20 * 2;
 
     @Config.Comment("Allow mobs to enter 'Breeding mode' if possible")
@@ -47,6 +48,14 @@ public class SmellyConfig {
 
     @Config.Comment("Allow players from mobs stealing stuff by wearing pants")
     public static boolean protectionPants = false;
+
+    @Config.Comment("How many ticks a mob will forget about once it has completed tge AI task")
+    @Config.RangeInt(min = 0)
+    public static int playerChasingCooldown = 2 * 20;
+
+    @Config.Comment("How many ticks a mob will run away after stealing from the players")
+    @Config.RangeInt(min = 0)
+    public static int runAwayTime = 2 * 20;
 
     public static void loadEntityInfo() {
         EntityData.entityDataList.clear();

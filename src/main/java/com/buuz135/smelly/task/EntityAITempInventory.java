@@ -48,7 +48,7 @@ public class EntityAITempInventory extends EntityAIBase {
         } else {
             this.temptingPlayer = this.temptedEntity.world.getClosestPlayerToEntity(this.temptedEntity, 10.0D);
             if (this.temptingPlayer == null) {
-                this.delayTemptCounter = 2 * 20; //Stopping the AI for a while from working
+                this.delayTemptCounter = SmellyConfig.playerChasingCooldown; //Stopping the AI for a while from working
                 return false;
             } else {
                 return this.isTempting();
@@ -78,11 +78,11 @@ public class EntityAITempInventory extends EntityAIBase {
                         this.temptingPlayer.inventory.getStackInSlot(slot).shrink(1);
                         this.temptingPlayer.attackEntityFrom(DamageSource.GENERIC, 0.1f);
                         this.veryCloseTime = 0;
-                        this.delayTemptCounter = 2 * 20;
+                        this.delayTemptCounter = SmellyConfig.playerChasingCooldown;
                         if (SmellyConfig.sexyMode && this.temptedEntity instanceof EntityAnimal) {
                             ((EntityAnimal) this.temptedEntity).setInLove(null);
                         } else {
-                            this.runAwayTime = 2 * 20;
+                            this.runAwayTime = SmellyConfig.runAwayTime;
                         }
                         break;
                     }
