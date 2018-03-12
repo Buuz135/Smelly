@@ -27,14 +27,10 @@ public class Smelly {
 
     public static final String MOD_ID = "smelly";
     public static final String MOD_NAME = "Smelly";
-    public static final String VERSION = "1.0-SNAPSHOT";
+    public static final String VERSION = "1.0";
 
     @Mod.Instance(MOD_ID)
     public static Smelly INSTANCE;
-
-    //Allow player to stop mobs from stealing food by wearing pants
-    //Allow mobs to run away if they started getting close when the player starts moving
-    //Allow to scare mobs depending of an item/collection/oreDict
 
     private static List<EntityCreature> created = new ArrayList<>();
 
