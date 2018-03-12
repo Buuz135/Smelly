@@ -73,7 +73,7 @@ public class EntityAITempInventory extends EntityAIBase {
                 Collections.shuffle(shuffled);
                 if (shuffled.isEmpty()) shuffled = temptingPlayer.inventory.mainInventory;
                 for (ItemStack stack : shuffled) {
-                    if (this.temptingPlayer.inventory.hasItemStack(stack)) {
+                    if (this.data.isBreedingItem(this.temptedEntity, stack) || (!this.data.getItems().equals("breeding") && this.temptingPlayer.inventory.hasItemStack(stack))) {
                         int slot = this.temptingPlayer.inventory.getSlotFor(stack);
                         this.temptingPlayer.inventory.getStackInSlot(slot).shrink(1);
                         this.temptingPlayer.attackEntityFrom(DamageSource.GENERIC, 0.1f);

@@ -73,6 +73,9 @@ public class EntityData {
         return false;
     }
 
+    public boolean isBreedingItem(Entity self, ItemStack stack) {
+        return items.equalsIgnoreCase("breeding") && self instanceof EntityAnimal && ((EntityAnimal) self).isBreedingItem(stack);
+    }
 
     public String getMobID() {
         return mobID;
