@@ -7,6 +7,7 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
@@ -74,7 +75,8 @@ public class EntityAITempInventory extends EntityAIBase {
                 if (shuffled.isEmpty()) shuffled = temptingPlayer.inventory.mainInventory;
                 for (ItemStack stack : shuffled) {
                     if (this.data.isBreedingItem(this.temptedEntity, stack) || (!this.data.getItems().equals("breeding") && this.temptingPlayer.inventory.hasItemStack(stack))) {
-                        int slot = this.temptingPlayer.inventory.getSlotFor(stack);
+                        int slot = this.getSlotFor(stack, temptingPlayer.inventory);
+                        if (slot == -1) continue;
                         this.temptingPlayer.inventory.getStackInSlot(slot).shrink(1);
                         this.temptingPlayer.attackEntityFrom(DamageSource.GENERIC, 0.1f);
                         this.veryCloseTime = 0;
@@ -100,6 +102,15 @@ public class EntityAITempInventory extends EntityAIBase {
 
     private boolean isPlayerWearingPants() {
         return !this.temptingPlayer.inventory.armorItemInSlot(1).isEmpty();
+    }
+
+    private int getSlotFor(ItemStack stack, InventoryPlayer player) {
+        for (int i = 0; i < player.mainInventory.size(); ++i) {
+            if (!(player.mainInventory.get(i)).isEmpty() && stack.isItemEqual(player.mainInventory.get(i))) {
+                return i;
+            }
+        }
+        return -1;
     }
 
 }
