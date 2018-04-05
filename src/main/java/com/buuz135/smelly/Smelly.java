@@ -62,7 +62,7 @@ public class Smelly {
     public void onServerTick(TickEvent.ServerTickEvent tickEvent) {
         List<EntityCreature> used = new ArrayList<>();
         for (EntityCreature animal : created) {
-            if (!animal.isDead) {
+            if (animal != null && !animal.isDead) {
                 for (EntityData data : EntityData.getEntityDataFromModID(EntityList.getKey(animal).toString()))
                     animal.tasks.addTask(4, new EntityAITempInventory(animal, data));
             }
