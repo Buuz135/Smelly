@@ -27,7 +27,7 @@ public class Smelly {
 
     public static final String MOD_ID = "smelly";
     public static final String MOD_NAME = "Smelly";
-    public static final String VERSION = "1.0.1";
+    public static final String VERSION = "1.0.3";
 
     @Mod.Instance(MOD_ID)
     public static Smelly INSTANCE;
@@ -61,8 +61,8 @@ public class Smelly {
     @SubscribeEvent
     public void onServerTick(TickEvent.ServerTickEvent tickEvent) {
         List<EntityCreature> used = new ArrayList<>();
-        for (EntityCreature animal : created) {
-            if (animal != null && !animal.isDead) {
+        for (EntityCreature animal : new ArrayList<>(created)) {
+            if (animal != null && !animal.isDead && animal.tasks != null) {
                 for (EntityData data : EntityData.getEntityDataFromModID(EntityList.getKey(animal).toString()))
                     animal.tasks.addTask(4, new EntityAITempInventory(animal, data));
             }
