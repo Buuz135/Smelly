@@ -19,11 +19,14 @@ public class EntityData {
     private final String items;
     private final float speed;
     private List<ItemStack> possibleItems;
+    private boolean ignoresMeta;
+
     public EntityData(String mobID, String items, float speed) {
         this.mobID = mobID;
         this.items = items;
         this.speed = speed;
         this.possibleItems = new ArrayList<>();
+        this.ignoresMeta = false;
         if (this.items.contains(":")) {
             for (String id : this.items.split(",")) {
                 String[] name = id.split(":");
@@ -35,6 +38,7 @@ public class EntityData {
                                 NonNullList<ItemStack> stacks = NonNullList.create();
                                 item.getSubItems(item.getCreativeTab(), stacks);
                                 possibleItems.addAll(stacks);
+                                this.ignoresMeta = true;
                             } else {
                                 try {
                                     possibleItems.add(new ItemStack(item, 1, Integer.parseInt(name[2])));
@@ -67,8 +71,16 @@ public class EntityData {
                 if (((EntityAnimal) self).isBreedingItem(stack)) return true;
             }
         }
+        for (ItemStack itemStack : playerMP.inventory.mainInventory) {
+            if (isStackValid(itemStack)) return true;
+        }
+        return false;
+    }
+
+    public boolean isStackValid(ItemStack itemStack) {
         for (ItemStack stack : possibleItems) {
-            if (playerMP.inventory.hasItemStack(stack)) return true;
+            if (ignoresMeta && stack.isItemEqualIgnoreDurability(itemStack)) return true;
+            else if (stack.isItemEqual(itemStack)) return true;
         }
         return false;
     }

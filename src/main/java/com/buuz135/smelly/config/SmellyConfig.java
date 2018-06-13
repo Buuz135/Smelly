@@ -19,7 +19,7 @@ public class SmellyConfig {
             "Items can be:\n" +
             " * The word breeding: That will use mobs breeding items\n" +
             " * An oredictionary entry: That will use all the items (Example: oreIron)\n" +
-            " * A list of item ids separated by coma: modid:itemid:meta. Meta can be missing, then it will ignore the metadata of the item (Example: minecraft:wool:7 or minecraft:stone)\n" +
+            " * A list of item ids separated by coma: modid:itemid:meta. Meta can be *, then it will ignore the metadata of the item (Example: minecraft:wool:7 or minecraft:stone)\n" +
             "Examples: \n" +
             " minecraft:cow|breeding|1.0\n" +
             " minecraft:pig|minecraft:carrot|1.0\n")

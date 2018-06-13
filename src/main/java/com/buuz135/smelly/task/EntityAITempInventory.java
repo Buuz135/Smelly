@@ -70,11 +70,11 @@ public class EntityAITempInventory extends EntityAIBase {
             if (SmellyConfig.protectionPants && isPlayerWearingPants()) return;
             if (SmellyConfig.allowMobsToStealFromPlayers) ++this.veryCloseTime;
             if (this.veryCloseTime > SmellyConfig.stealingTime) {
-                List<ItemStack> shuffled = new ArrayList<>(this.data.getPossibleItems());
+                List<ItemStack> shuffled = new ArrayList<>(temptingPlayer.inventory.mainInventory);
                 Collections.shuffle(shuffled);
-                if (shuffled.isEmpty()) shuffled = temptingPlayer.inventory.mainInventory;
+                shuffled.removeIf(ItemStack::isEmpty);
                 for (ItemStack stack : shuffled) {
-                    if (this.data.isBreedingItem(this.temptedEntity, stack) || (!this.data.getItems().equals("breeding") && this.temptingPlayer.inventory.hasItemStack(stack))) {
+                    if (this.data.isBreedingItem(this.temptedEntity, stack) || (!this.data.getItems().equals("breeding") && this.data.isStackValid(stack))) {
                         int slot = this.getSlotFor(stack, temptingPlayer.inventory);
                         if (slot == -1) continue;
                         this.temptingPlayer.inventory.getStackInSlot(slot).shrink(1);
